@@ -82,3 +82,26 @@ function draw() {
 
     surface.Draw();
 }
+
+function CreateSurfaceData() {
+    let C = 1;
+    let vertexList = [];
+    let x = 0;
+    let y = 0;
+    let z = 0;
+    let f_u = 0;
+    let a_uv = 0;
+    let r_uv = 0;
+    for (let u = -90; u <= 90; u += 2) {
+        for (let v = 0; v <= 180; v += 2) {
+            f_u = -deg2rad(u) / Math.sqrt(C + 1) + Math.atan(Math.sqrt(C + 1) * Math.tan(deg2rad(u)));
+            a_uv = 2 / (C + 1 - C * Math.sin(deg2rad(v)) * Math.sin(deg2rad(v)) * Math.cos(deg2rad(u)) * Math.cos(deg2rad(u)));
+            r_uv = (a_uv / Math.sqrt(C)) * Math.sqrt((C + 1) * (1 + C * Math.sin(deg2rad(u)) * Math.sin(deg2rad(u)))) * Math.sin(deg2rad(v));
+            x = r_uv * Math.cos(f_u);
+            y = r_uv * Math.sin(f_u);
+            z = (Math.log(deg2rad(v) / 2) + a_uv * (C + 1) * Math.cos(deg2rad(v))) / Math.sqrt(C);
+            vertexList.push(x, y, z);
+        }
+    }
+    return vertexList;
+}
