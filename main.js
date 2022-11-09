@@ -105,3 +105,20 @@ function CreateSurfaceData() {
     }
     return vertexList;
 }
+
+/* Initialize the WebGL context. Called from init() */
+function initGL() {
+    let prog = createProgram(gl, vertexShaderSource, fragmentShaderSource);
+
+    shProgram = new ShaderProgram('Basic', prog);
+    shProgram.Use();
+
+    shProgram.iAttribVertex = gl.getAttribLocation(prog, "vertex");
+    shProgram.iModelViewProjectionMatrix = gl.getUniformLocation(prog, "ModelViewProjectionMatrix");
+    shProgram.iColor = gl.getUniformLocation(prog, "color");
+
+    surface = new Model('Surface');
+    surface.BufferData(CreateSurfaceData());
+
+    gl.enable(gl.DEPTH_TEST);
+}
