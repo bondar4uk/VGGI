@@ -153,3 +153,32 @@ function createProgram(gl, vShader, fShader) {
     }
     return prog;
 }
+
+/**
+ * initialization function that will be called when the page has loaded
+ */
+function init() {
+    let canvas;
+    try {
+        canvas = document.getElementById("webglcanvas");
+        gl = canvas.getContext("webgl");
+        if (!gl) {
+            throw "Browser does not support WebGL";
+        }
+    } catch (e) {
+        document.getElementById("canvas-holder").innerHTML =
+            "<p>Sorry, could not get a WebGL graphics context.</p>";
+        return;
+    }
+    try {
+        initGL(); // initialize the WebGL graphics context
+    } catch (e) {
+        document.getElementById("canvas-holder").innerHTML =
+            "<p>Sorry, could not initialize the WebGL graphics context: " + e + "</p>";
+        return;
+    }
+
+    spaceball = new TrackballRotator(canvas, draw, 0);
+
+    draw();
+}
